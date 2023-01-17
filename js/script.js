@@ -23,9 +23,8 @@ class calculator {
     // Processar todas as operações da calculadora
     processOperation(operation) {
 
-
         //Checar se o current esta vazio
-        if (this.currentOperationText.innerText === "") {
+        if (this.currentOperationText.innerText === "" &&  operation !== "C") {
             if(this.previousOperationText.innerText !== "") {
                 //Mudar operação
                 this.changeOperation(operation)
@@ -44,8 +43,6 @@ class calculator {
                 operationValue = previous + current
                 this.updateScreen(operationValue, operation, current, previous)
                 break;
-            default:
-                return;
             case "-":
                 operationValue = previous - current
                 this.updateScreen(operationValue, operation, current, previous)
@@ -58,10 +55,20 @@ class calculator {
                 operationValue = previous * current
                 this.updateScreen(operationValue, operation, current, previous)
                 break;
-            case "*":
-                    operationValue = previous * current
-                    this.updateScreen(operationValue, operation, current, previous)
-                    break;
+            case "DEL":
+                    this.processDelOperator()
+                break;
+            case "CE":
+                    this.processClearCurrentOperation()
+                break;
+            case "C": //Limpa todas operações
+                this.processClearAllOperation()
+             break;
+            case "=":
+                this.processEqualOperator()
+                break;     
+            default:
+                return;
         }
     }
 
@@ -97,6 +104,28 @@ class calculator {
 
         this.previousOperationText.innerText = this.previousOperationText.innerText.slice(0, -1) + operation
     }
+  //Deletar ultimo digito  
+  processDelOperator() {
+    this.currentOperationText.innerText = this.currentOperationText.innerText.slice(0, -1)
+  }  
+
+  // Limpara currrent operation
+  processClearCurrentOperation() {
+    this.currentOperationText.innerText = "";
+  }
+
+  //Limpar todas operações
+  processClearAllOperation() {
+    this.currentOperationText.innerText = ""
+    this.previousOperationText.innerText = ""
+  }
+
+
+  processEqualOperator() {
+        const operation = previousOperationText.innerText.split(" ")[1]
+
+        this.processOperation(operation)
+  }
 }
 
 const calc =  new calculator(previousOperationText, currentOperationText);
